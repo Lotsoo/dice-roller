@@ -13,6 +13,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -36,19 +40,33 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DiceRollerApp(modifier: Modifier = Modifier) {
+    var counter by remember {
+        mutableIntStateOf(value = 1)
+    }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
     ) {
-        Dice()
-        Button(onClick = { /*TODO*/ }) {
+
+        when (counter) {
+            1 -> Dice(image = R.drawable.dice_1)
+            2 -> Dice(image = R.drawable.dice_2)
+            3 -> Dice(image = R.drawable.dice_3)
+            4 -> Dice(image = R.drawable.dice_4)
+            5 -> Dice(image = R.drawable.dice_5)
+            else -> Dice(image = R.drawable.dice_6)
+        }
+
+        Button(onClick = {
+            counter = (1..6).random()
+        }) {
             Text(text = "Roll")
         }
     }
 }
 
 @Composable
-fun Dice(modifier: Modifier = Modifier) {
-    Image(painter = painterResource(id = R.drawable.dice_1), contentDescription = null)
+fun Dice(image: Int) {
+    Image(painter = painterResource(id = image), contentDescription = null)
 }
